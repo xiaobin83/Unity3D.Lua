@@ -25,7 +25,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	class LuaPointerEventHander : LuaInstanceBehaviour0,
 		IPointerUpHandler, IPointerDownHandler,

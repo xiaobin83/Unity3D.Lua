@@ -26,7 +26,7 @@ Unity.lua = setmetatable({
 	end},
 
 	{ __index = function(tbl, name)
-		local m = csharp.checked_import('lua.'..name)
+		local m = csharp.checked_import('x600d1dea.lua.'..name)
 		rawset(tbl, name, m)
 		return m
 	end}

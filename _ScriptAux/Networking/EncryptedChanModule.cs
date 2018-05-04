@@ -1,18 +1,19 @@
 ﻿using System;
-using x600d1dea.networking;
+using x600d1dea.stubs.networking;
 using x600d1dea.pike;
-using x600d1dea.utils;
+using x600d1dea.stubs.utils;
+using x600d1dea.lua;
 
 
 public class EncryptedChanModule : IChanModule
 {
-	lua.LuaFunction onInit;
+	LuaFunction onInit;
 	long secretSend, secretRecv;
 	long modpowerSend, modpowerRecv;
 	Pike pikeSend, pikeRecv;
 
-	lua.LuaFunction logPack_;
-	public lua.LuaFunction logPack
+	LuaFunction logPack_;
+	public LuaFunction logPack
 	{
 		get
 		{
@@ -31,7 +32,7 @@ public class EncryptedChanModule : IChanModule
 	}
 	State state;
 
-	public EncryptedChanModule(lua.LuaFunction onInit = null)
+	public EncryptedChanModule(LuaFunction onInit = null)
 	{
 		if (onInit != null)
 			this.onInit = onInit.Retain();

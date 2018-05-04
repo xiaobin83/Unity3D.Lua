@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public class WatchingLuaSources : AssetPostprocessor 
 	{

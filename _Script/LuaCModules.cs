@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public class CModules
 	{

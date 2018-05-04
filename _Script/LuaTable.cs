@@ -24,7 +24,7 @@ SOFTWARE.
 ﻿using System.Collections.Generic;
 using System;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public class LuaTable : IDisposable
 	{

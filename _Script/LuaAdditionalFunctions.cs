@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public class LuaAdditionalFunctions
 	{

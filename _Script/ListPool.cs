@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	internal class ListPool<T>
 	{

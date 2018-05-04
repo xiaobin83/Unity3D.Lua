@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-namespace lua
+namespace x600d1dea.lua
 {
 	[InitializeOnLoad]
 	public class LuaBehaviourEditorIcons

@@ -26,7 +26,7 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	[CustomEditor(typeof(lua.LuaBehaviour))]
 	public class LuaBehaviourEditor : Editor

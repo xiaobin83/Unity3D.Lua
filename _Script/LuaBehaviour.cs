@@ -27,7 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AOT;
 
-namespace lua
+namespace x600d1dea.lua
 {
 
 	/*
@@ -355,7 +355,7 @@ namespace lua
 
 				// choose script
 				ulong flag = messageFlag & (MakeFlag(Message.Update) | MakeFlag(Message.FixedUpdate) | MakeFlag(Message.LateUpdate));
-				var componentType = Type.GetType("lua.LuaInstanceBehaviour" + flag.ToString());
+				var componentType = Type.GetType("x600d1dea.lua.LuaInstanceBehaviour" + flag.ToString());
 				instanceBehaviours.Add(gameObject.AddComponent(componentType) as LuaInstanceBehaviour0);
 
 				flag = messageFlag & (MakeFlag(Message.OnCollisionEnter) | MakeFlag(Message.OnCollisionExit));

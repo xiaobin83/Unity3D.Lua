@@ -28,7 +28,7 @@ using AOT;
 
 using lua_State = System.IntPtr;
 
-namespace lua
+namespace x600d1dea.lua
 {
 
 	internal class MetaMethod

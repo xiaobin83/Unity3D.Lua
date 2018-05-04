@@ -28,7 +28,7 @@ using UnityEngine;
 using System.Reflection;
 using System;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public class LuaDebugging
 	{

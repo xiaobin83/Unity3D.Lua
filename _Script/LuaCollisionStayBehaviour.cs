@@ -23,7 +23,7 @@ SOFTWARE.
 */
 using UnityEngine;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	internal class LuaCollisionStayBehaviour : LuaInstanceBehaviour0
 	{

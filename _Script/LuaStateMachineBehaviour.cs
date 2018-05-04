@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	internal class LuaStateMachineBehaviour : StateMachineBehaviour
 	{

@@ -38,7 +38,7 @@ using AOT;
 // if Panic (LuaFatalException) thrown, there is no way to resume execution after it (stack frame changed)
 
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public delegate void LogDelegate(string message);
 
@@ -635,9 +635,9 @@ namespace lua
 			Editor_UpdatePath();
 #endif
 
-			AddModule("pb", lua.CModules.luaopen_pb);
-			AddModule("rapidjson", lua.CModules.luaopen_rapidjson);
-			AddModule("bson", lua.CModules.luaopen_bson);
+			AddModule("pb", CModules.luaopen_pb);
+			AddModule("rapidjson", CModules.luaopen_rapidjson);
+			AddModule("bson", CModules.luaopen_bson);
 			AddModule("webrequest2", utils.WebRequest2_Lua.Open);
 			AddModule("sqlite", utils.SQLite_Lua.Open);
 			AddModule("nativeutils", utils.NativeUtils_Lua.Open);
@@ -725,7 +725,7 @@ namespace lua
 			Api.lua_setglobal(L, name);
 		}
 
-		public void AddModule(string name, lua.Api.lua_CFunction open)
+		public void AddModule(string name, Api.lua_CFunction open)
 		{
 			Api.luaL_requiref(L, name, open, 0);
 			Api.lua_pop(L, 1);

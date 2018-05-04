@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using x600d1dea.stubs.utils;
 
-namespace utils
+namespace x600d1dea.lua.utils
 {
 	public class Debugable : MonoBehaviour
 	{
@@ -14,7 +14,7 @@ namespace utils
 		class Button
 		{
 			public string name;
-			public lua.LuaFunction func;
+			public LuaFunction func;
 			public System.Action action;
 			public int width = 100;
 		}
@@ -24,7 +24,7 @@ namespace utils
 		class StatusString
 		{
 			public string name;
-			public lua.LuaFunction func;
+			public LuaFunction func;
 		}
 		List<StatusString> statusStrings = new List<StatusString>();
 
@@ -34,7 +34,7 @@ namespace utils
 			public string name;
 			public string unitName;
 			public System.Func<float> value;
-			public lua.LuaFunction func;
+			public LuaFunction func;
 			public float time;
 			public float sampleStepDuration;
 			public Rect rect;
@@ -140,7 +140,7 @@ namespace utils
 		}
 		List<Graph> graphs = new List<Graph>();
 
-		lua.LuaFunction cmdHandler;
+		LuaFunction cmdHandler;
 		string cmdString;
 
 		string popUpContent = "";
@@ -149,16 +149,13 @@ namespace utils
 
 		protected virtual void Update()
 		{
-#if UNITY_EDITOR
 			foreach (var g in graphs)
 			{
 				g.Sample();
 			}
-#endif
 		}
 
 		Vector2 scrollPosition = Vector2.zero;
-#if UNITY_EDITOR
 		void OnGUI()
 		{
 			if (show)
@@ -245,7 +242,6 @@ namespace utils
 				}
 			}
 		}
-#endif
 
 		public void Editor_SetArea(float x, float y, float width, float height)
 		{
@@ -257,7 +253,7 @@ namespace utils
 			this.title = title;
 		}
 
-		public void Editor_AddButton(string name, lua.LuaFunction func, int width = 100)
+		public void AddButton(string name, LuaFunction func, int width = 100)
 		{
 			var b = new Button()
 			{
@@ -279,7 +275,7 @@ namespace utils
 				});
 		}
 
-		public void Editor_AddToolbarButton(string name, lua.LuaFunction func, int width = 100)
+		public void Editor_AddToolbarButton(string name, LuaFunction func, int width = 100)
 		{
 			var b = new Button();
 			b.name = name;
@@ -291,7 +287,7 @@ namespace utils
 			toolbarButtons.Add(b);
 		}
 
-		public void Editor_AddStatsString(string name, lua.LuaFunction func)
+		public void Editor_AddStatsString(string name, LuaFunction func)
 		{
 			statusStrings.Add(
 				new StatusString()
@@ -323,7 +319,7 @@ namespace utils
 		public void Editor_AddGraph(
 			string name,
 			string unitName,
-			lua.LuaFunction func,
+			LuaFunction func,
 			float time,
 			float duration,
 			float x, float y, float w, float h, Color color)
@@ -343,7 +339,7 @@ namespace utils
 			graphs.Add(g);
 		}
 
-		public void Editor_SetCmdHandler(lua.LuaFunction func)
+		public void SetCmdHandler(LuaFunction func)
 		{
 			cmdHandler = func.Retain();
 		}
@@ -353,7 +349,7 @@ namespace utils
 			show = !show;
 		}
 
-		public void Editor_PopUp(string content)
+		public void PopUp(string content)
 		{
 			popUpContent += content;
 			showPopUp = true;

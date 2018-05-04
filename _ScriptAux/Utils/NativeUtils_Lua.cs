@@ -6,42 +6,42 @@ using Hjg.Pngcs;
 using Hjg.Pngcs.Chunks;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Collections.Generic;
-using x600d1dea.utils;
+using x600d1dea.stubs.utils;
 
-namespace utils
+namespace x600d1dea.lua.utils
 {
 	public class NativeUtils_Lua
 	{
 
-		[MonoPInvokeCallback(typeof(lua.Api.lua_CFunction))]
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		public static int Open(IntPtr L)
 		{
-			var reg = new lua.Api.luaL_Reg[]
+			var reg = new Api.luaL_Reg[]
 			{
-				new lua.Api.luaL_Reg("LoadTexture", LoadTexture_Lua),
-				new lua.Api.luaL_Reg("FileExists", FileExists_Lua),
-				new lua.Api.luaL_Reg("WriteAllBytes", WriteAllBytes_Lua),
-				new lua.Api.luaL_Reg("Untar", Untar_Lua),
-				new lua.Api.luaL_Reg("UntarFromResource", UntarFromResources_Lua),
+				new Api.luaL_Reg("LoadTexture", LoadTexture_Lua),
+				new Api.luaL_Reg("FileExists", FileExists_Lua),
+				new Api.luaL_Reg("WriteAllBytes", WriteAllBytes_Lua),
+				new Api.luaL_Reg("Untar", Untar_Lua),
+				new Api.luaL_Reg("UntarFromResource", UntarFromResources_Lua),
 			};
-			lua.Api.luaL_newlib(L, reg);
+			Api.luaL_newlib(L, reg);
 			return 1;
 		}
 
 
-		[MonoPInvokeCallback(typeof(lua.Api.lua_CFunction))]
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		public static int WriteAllBytes_Lua(IntPtr L)
 		{
-			var filename = lua.Api.lua_tostring(L, 1);
-			var bytes = lua.Api.lua_tobytes(L, 2);
+			var filename = Api.lua_tostring(L, 1);
+			var bytes = Api.lua_tobytes(L, 2);
 			File.WriteAllBytes(Path.Combine(Application.persistentDataPath, filename), bytes);
 			return 0;
 		}
 
-		[MonoPInvokeCallback(typeof(lua.Api.lua_CFunction))]
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int LoadTexture_Lua(IntPtr L)
 		{
-			var path = lua.Api.lua_tostring(L, 1);
+			var path = Api.lua_tostring(L, 1);
 			try
 			{
 				var bytes = File.ReadAllBytes(Path.Combine(Application.persistentDataPath, path));
@@ -72,43 +72,43 @@ namespace utils
 					var retCount = 1;
 					if (hasOffset)
 					{
-						lua.Api.lua_pushinteger(L, offx);
-						lua.Api.lua_pushinteger(L, offy);
-						lua.Api.lua_pushinteger(L, units);
+						Api.lua_pushinteger(L, offx);
+						Api.lua_pushinteger(L, offy);
+						Api.lua_pushinteger(L, units);
 						retCount += 3;
 					}
 					return retCount; 
 				} 
 				else
 				{
-					lua.Api.lua_pushnil(L);
-					lua.Api.lua_pushstring(L, "err LoadImage from " + path);
+					Api.lua_pushnil(L);
+					Api.lua_pushstring(L, "err LoadImage from " + path);
 					return 2;
 				}
 			}
 			catch (Exception e)
 			{
-				lua.Api.lua_pushnil(L);
-				lua.Api.lua_pushstring(L, e.Message);
+				Api.lua_pushnil(L);
+				Api.lua_pushstring(L, e.Message);
 				return 2;
 			}
 		}
 
-		[MonoPInvokeCallback(typeof(lua.Api.lua_CFunction))]
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int FileExists_Lua(IntPtr L)
 		{
-			var path = lua.Api.lua_tostring(L, 1);
+			var path = Api.lua_tostring(L, 1);
 			var b = File.Exists(Path.Combine(Application.persistentDataPath, path));
-			lua.Api.lua_pushboolean(L, b);
+			Api.lua_pushboolean(L, b);
 			return 1;
 		}
 
 
-		[MonoPInvokeCallback(typeof(lua.Api.lua_CFunction))]
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int Untar_Lua(IntPtr L)
 		{
-			var filename = lua.Api.lua_tostring(L, 1);
-			var path = lua.Api.lua_tostring(L, 2);
+			var filename = Api.lua_tostring(L, 1);
+			var path = Api.lua_tostring(L, 2);
 			var unpackPath = Path.Combine(Application.persistentDataPath, path);
 			if (!Directory.Exists(unpackPath))
 			{
@@ -130,11 +130,11 @@ namespace utils
 				archive.ExtractContents(unpackPath);
 				archive.Dispose();
 
-				lua.Api.lua_createtable(L, names.Count, 0);
+				Api.lua_createtable(L, names.Count, 0);
 				for (int i = 0; i < names.Count; ++i)
 				{
-					lua.Api.lua_pushstring(L, names[i]);
-					lua.Api.lua_seti(L, -2, i);
+					Api.lua_pushstring(L, names[i]);
+					Api.lua_seti(L, -2, i);
 				}
 				return 1;
 			}
@@ -142,17 +142,17 @@ namespace utils
 			{
 				if (archive != null)
 					archive.Dispose();
-				lua.Api.lua_pushnil(L);
-				lua.Api.lua_pushstring(L, e.Message);
+				Api.lua_pushnil(L);
+				Api.lua_pushstring(L, e.Message);
 				return 2;
 			}
 		}
 		
-		[MonoPInvokeCallback(typeof(lua.Api.lua_CFunction))]
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int UntarFromResources_Lua(IntPtr L)
 		{
-			var uri = lua.Api.lua_tostring(L, 1);
-			var path = lua.Api.lua_tostring(L, 2);
+			var uri = Api.lua_tostring(L, 1);
+			var path = Api.lua_tostring(L, 2);
 			var unpackPath = Path.Combine(Application.persistentDataPath, path);
 			TarArchive archive = null;
 			try
@@ -162,8 +162,8 @@ namespace utils
 					Directory.CreateDirectory(unpackPath);
 				}
 				var forceUnpack = false;
-				if (lua.Api.lua_gettop(L) == 3)
-					forceUnpack = lua.Api.lua_toboolean(L, 3);
+				if (Api.lua_gettop(L) == 3)
+					forceUnpack = Api.lua_toboolean(L, 3);
 				var bytes = ResMgr.LoadBytes(uri);
 				var ms = new MemoryStream(bytes);
 				archive = TarArchive.CreateInputTarArchive(ms);
@@ -201,11 +201,11 @@ namespace utils
 				}
 				archive.Dispose();
 
-				lua.Api.lua_createtable(L, names.Count, 0);
+				Api.lua_createtable(L, names.Count, 0);
 				for (int i = 0; i < names.Count; ++i)
 				{
-					lua.Api.lua_pushstring(L, names[i]);
-					lua.Api.lua_seti(L, -2, i);
+					Api.lua_pushstring(L, names[i]);
+					Api.lua_seti(L, -2, i);
 				}
 				return 1;
 			}
@@ -215,8 +215,8 @@ namespace utils
 				{
 					archive.Dispose();
 				}
-				lua.Api.lua_pushnil(L);
-				lua.Api.lua_pushstring(L, e.Message);
+				Api.lua_pushnil(L);
+				Api.lua_pushstring(L, e.Message);
 				return 2;
 			}
 		}

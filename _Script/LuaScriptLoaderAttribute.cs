@@ -25,7 +25,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 
-namespace lua
+namespace x600d1dea.lua
 {
 	public class LuaScriptLoaderAttribute : Attribute
 	{
