@@ -69,7 +69,11 @@ local _Release = function(obj, resetParent)
 	if obj == nil then return end
 
 	if resetParent then
-		obj.transform:SetParent(nil, false)
+		if type(resetParent) == 'boolean' then
+			obj.transform:SetParent(nil, false)
+		else
+			obj.transform:SetParent(resetParent, false)
+		end
 	end
 	local id = obj:GetInstanceID()
 	local objTuple = allocList[id]
