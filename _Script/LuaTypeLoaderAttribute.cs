@@ -23,8 +23,8 @@ SOFTWARE.
 */
 
 using System;
-using System.Reflection;
 using System.Linq;
+using x600d1dea.stubs.utils;
 
 namespace x600d1dea.lua
 {
@@ -38,32 +38,7 @@ namespace x600d1dea.lua
 			if (typeLoaderCached) return cachedTypeLoader;
 			typeLoaderCached = true;
 
-			System.Collections.Generic.IEnumerable<Type> allTypes = null;
-			try
-			{
-				allTypes = Assembly.Load("Assembly-CSharp").GetTypes().AsEnumerable();
-			}
-			catch
-			{ }
-
-			try
-			{
-				var typesInPlugins = Assembly.Load("Assembly-CSharp-firstpass").GetTypes();
-				if (allTypes != null)
-					allTypes = allTypes.Union(typesInPlugins);
-				else
-					allTypes = typesInPlugins;
-			}
-			catch
-			{ }
-			if (allTypes == null)
-			{
-				Config.LogError("TypeLoad not found!");
-				return null;
-			}
-			var	methods	= allTypes.SelectMany(t	=> t.GetMethods(BindingFlags.Static	| BindingFlags.Public))
-				.Where(m => m.GetCustomAttributes(typeof(LuaTypeLoaderAttribute), false).Length > 0)
-				.ToArray();
+			var methods = GetMethodInfo.WithAttr<LuaTypeLoaderAttribute>().ToArray();
 			if (methods.Length > 0)
 			{
 				var m = methods[0];

@@ -26,23 +26,18 @@ namespace x600d1dea.lua.networking
 		static Dictionary<string, LuaFunction> handlers = new Dictionary<string, LuaFunction>();
 
 
-		public class Message
-		{
-			public string id;
-			public string content;
-		}
 
 		static void OnEditorMessageReceived(string msg, List<string> rets)
 		{
 			try
 			{
-				var m = JsonConvert.DeserializeObject<Message>(msg);
+				var m = JsonConvert.DeserializeObject<stubs.networking.ECMHeader>(msg);
 				LuaFunction fn;
 				if (handlers.TryGetValue(m.id, out fn))
 				{
-					var ret = (string)fn.Invoke1(m.content);
+					var ret = (string)fn.Invoke1(msg);
 					rets.Add(JsonConvert.SerializeObject(
-						new Message()
+						new stubs.networking.ECMessage()
 						{
 							id = m.id,
 							content = ret

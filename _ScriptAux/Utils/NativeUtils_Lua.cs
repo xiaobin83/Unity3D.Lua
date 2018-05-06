@@ -19,8 +19,6 @@ namespace x600d1dea.lua.utils
 			var reg = new Api.luaL_Reg[]
 			{
 				new Api.luaL_Reg("LoadTexture", LoadTexture_Lua),
-				new Api.luaL_Reg("FileExists", FileExists_Lua),
-				new Api.luaL_Reg("WriteAllBytes", WriteAllBytes_Lua),
 				new Api.luaL_Reg("Untar", Untar_Lua),
 				new Api.luaL_Reg("UntarFromResource", UntarFromResources_Lua),
 			};
@@ -28,15 +26,6 @@ namespace x600d1dea.lua.utils
 			return 1;
 		}
 
-
-		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
-		public static int WriteAllBytes_Lua(IntPtr L)
-		{
-			var filename = Api.lua_tostring(L, 1);
-			var bytes = Api.lua_tobytes(L, 2);
-			File.WriteAllBytes(Path.Combine(Application.persistentDataPath, filename), bytes);
-			return 0;
-		}
 
 		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int LoadTexture_Lua(IntPtr L)
@@ -93,16 +82,6 @@ namespace x600d1dea.lua.utils
 				return 2;
 			}
 		}
-
-		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
-		static int FileExists_Lua(IntPtr L)
-		{
-			var path = Api.lua_tostring(L, 1);
-			var b = File.Exists(Path.Combine(Application.persistentDataPath, path));
-			Api.lua_pushboolean(L, b);
-			return 1;
-		}
-
 
 		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int Untar_Lua(IntPtr L)

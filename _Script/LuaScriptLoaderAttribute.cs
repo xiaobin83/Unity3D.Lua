@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 using System;
-using System.Reflection;
 using System.Linq;
+using x600d1dea.stubs.utils;
 
 namespace x600d1dea.lua
 {
@@ -37,32 +37,7 @@ namespace x600d1dea.lua
 			if (scriptLoaderCached) return cachedScriptLoader;
 			scriptLoaderCached = true;
 
-			System.Collections.Generic.IEnumerable<Type> allTypes = null;
-			try
-			{
-				allTypes = Assembly.Load("Assembly-CSharp").GetTypes().AsEnumerable();
-			}
-			catch
-			{ }
-			try
-			{
-				var typesInPlugins = Assembly.Load("Assembly-CSharp-firstpass").GetTypes();
-				if (allTypes != null)
-					allTypes = allTypes.Union(typesInPlugins);
-				else
-					allTypes = typesInPlugins;
-			}
-			catch
-			{ }
-			if (allTypes == null)
-			{
-				Config.LogError("ScritpLoader not found!");
-				return null;
-			}
-
-			var methods = allTypes.SelectMany(t => t.GetMethods(BindingFlags.Static | BindingFlags.Public))
-				.Where(m => m.GetCustomAttributes(typeof(LuaScriptLoaderAttribute), false).Length > 0)
-				.ToArray();
+			var methods = GetMethodInfo.WithAttr<LuaScriptLoaderAttribute>().ToArray();
 			if (methods.Length > 0)
 			{
 				var m = methods[0];
