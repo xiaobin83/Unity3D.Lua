@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using x600d1dea.stubs.networking;
 using x600d1dea.stubs.utils;
-using x600d1dea.lua;
+using x600d1dea.lua.utils;
 
-namespace x600d1dea.lua.utils
+namespace x600d1dea.lua.networking
 {
 	public class Client : Debugable
 	{

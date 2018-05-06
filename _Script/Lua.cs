@@ -635,13 +635,14 @@ namespace x600d1dea.lua
 			Editor_UpdatePath();
 #endif
 
-			AddModule("pb", CModules.luaopen_pb);
-			AddModule("rapidjson", CModules.luaopen_rapidjson);
-			AddModule("bson", CModules.luaopen_bson);
-			AddModule("webrequest2", utils.WebRequest2_Lua.Open);
-			AddModule("sqlite", utils.SQLite_Lua.Open);
-			AddModule("nativeutils", utils.NativeUtils_Lua.Open);
-			AddModule("resmgr", utils.ResMgr_Lua.Open);
+			PreloadModule("pb", CModules.luaopen_pb);
+			PreloadModule("rapidjson", CModules.luaopen_rapidjson);
+			PreloadModule("bson", CModules.luaopen_bson);
+			PreloadModule("webrequest2", utils.WebRequest2_Lua.Open);
+			PreloadModule("sqlite", utils.SQLite_Lua.Open);
+			PreloadModule("nativeutils", utils.NativeUtils_Lua.Open);
+			PreloadModule("resmgr", utils.ResMgr_Lua.Open);
+			PreloadModule("connect_to_editor", networking.ConnectToEditor_Lua.Open);
 		}
 
 		public void Dispose()
@@ -725,9 +726,20 @@ namespace x600d1dea.lua
 			Api.lua_setglobal(L, name);
 		}
 
-		public void AddModule(string name, Api.lua_CFunction open)
+		
+		int packagePreloadRef = Api.LUA_NOREF;
+		public void PreloadModule(string name, Api.lua_CFunction open)
 		{
-			Api.luaL_requiref(L, name, open, 0);
+			if (packagePreloadRef == Api.LUA_NOREF)
+			{
+				Api.lua_getglobal(L, "package");
+				Api.lua_getfield(L, -1, "preload");
+				packagePreloadRef = Api.luaL_ref(L, Api.LUA_REGISTRYINDEX);
+				Api.lua_pop(L, 1);
+			}
+			Api.lua_rawgeti(L, Api.LUA_REGISTRYINDEX, packagePreloadRef);
+			Api.lua_pushcclosure(L, open, 0);
+			Api.lua_setfield(L, -2, name);
 			Api.lua_pop(L, 1);
 		}
 
