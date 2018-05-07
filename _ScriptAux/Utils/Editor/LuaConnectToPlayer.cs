@@ -53,7 +53,7 @@ namespace x600d1dea.lua
 					JsonConvert.SerializeObject(
 						new ECMPutFile()
 						{
-							path = ScriptNameAttribute.GetScriptName(path),
+							path = ScriptNameAttribute.GetScriptName(Path.Combine(stubs.BuildPath.projectDir, path)),
 							content = content
 						}));
 			}

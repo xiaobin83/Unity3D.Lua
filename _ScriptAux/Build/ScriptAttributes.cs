@@ -7,8 +7,15 @@ namespace x600d1dea.lua
 {
 	public class ScriptNameAttribute : Attribute
 	{
-		public static string GetScriptName(string path)
+		public static string GetScriptName(string absPath)
 		{
+			var methods = GetMethodInfo.WithAttr<ScriptNameAttribute>().ToArray();
+			if (methods.Length > 0)
+			{
+				var m = methods[0];
+				var getScriptName = (Func<string, string>)Delegate.CreateDelegate(typeof(Func<string, string>), m);
+				return getScriptName(absPath);
+			}
 			return null;
 		}
 	}
