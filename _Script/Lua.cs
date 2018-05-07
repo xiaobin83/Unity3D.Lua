@@ -643,7 +643,7 @@ namespace x600d1dea.lua
 			PreloadModule("nativeutils", utils.NativeUtils_Lua.Open);
 			PreloadModule("resmgr", utils.ResMgr_Lua.Open);
 			PreloadModule("connect_to_editor", networking.ConnectToEditor_Lua.Open);
-			PreloadModule("io", utils.IO_Lua.Open);
+			PreloadModule("unity.io", utils.IO_Lua.Open);
 		}
 
 		public void Dispose()
