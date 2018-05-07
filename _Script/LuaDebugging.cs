@@ -49,10 +49,10 @@ namespace x600d1dea.lua
 		{
 			if (Application.isPlaying)
 			{
-				var type = Type.GetType("lua.LuaBehaviour");
+				var type = Type.GetType("x600d1dea.lua.LuaBehaviour");
 				if (type == null)
 				{
-					type = Type.GetType("lua.LuaBehaviour, Assembly-CSharp-firstpass");
+					type = Type.GetType("x600d1dea.lua.LuaBehaviour, Assembly-CSharp-firstpass");
 				}
 				Debug.Assert(type != null);
 				var field = type.GetField("L", BindingFlags.Static | BindingFlags.NonPublic);
