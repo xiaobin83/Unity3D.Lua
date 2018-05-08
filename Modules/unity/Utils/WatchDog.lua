@@ -20,7 +20,7 @@ function WatchDog.WatchTable(tbl)
 			local old = t.__value[name]
 			if old ~= newValue then
 				t.__value[name] = newValue
-				t.onValueChanged(name, newValue)
+				t.onValueChanged(name, newValue, old)
 			end
 		end
 	})
