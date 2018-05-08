@@ -71,29 +71,20 @@ namespace x600d1dea.lua.utils
 		{
 			string url = Api.lua_tostring(L, 1);
 			string function = Api.lua_tostring(L, 2);
-			Dictionary<string, object> param = new Dictionary<string, object>();
-			if (Api.lua_istable(L, 3))
+			string paramStr = string.Empty;
+			if (Api.lua_isstring(L, 3))
 			{
-				Api.lua_pushvalue(L, 3);
-				Api.lua_pushnil(L);
-				while (Api.lua_next(L, -2) != 0)
-				{
-					var key = Api.lua_tostring(L, -2);
-					var value = lua.Lua.ValueAtInternal(L, -1);
-					param.Add(key, value);
-					Api.lua_pop(L, 1); // pop value
-				}
-				Api.lua_pop(L, 1); // pop table
+				paramStr = Api.lua_tostring(L, 3);
 			}
 
 			LuaFunction complete = null;
 			if (Api.lua_isfunction(L, 4))
 			{
-				complete = (LuaFunction)lua.Lua.ValueAtInternal(L, 4);
+				complete = (LuaFunction)Lua.ValueAtInternal(L, 4);
 			}
 
-			var context = (WebRequest2.Context)lua.Lua.ObjectAtInternal(L, 5);
-			WebRequest2.Post(new System.Uri(url), function, param,
+			var context = (WebRequest2.Context)Lua.ObjectAtInternal(L, 5);
+			WebRequest2.POST(new System.Uri(url), function, paramStr,
 				(s, resCode, payload, cookies, headers, localContext) =>
 				{
 					if (complete != null)
