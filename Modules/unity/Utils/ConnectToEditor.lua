@@ -1,6 +1,7 @@
 local ConnectToEditor = {}
 
-local io = require 'io'
+local io = require 'unity.io'
+local json = require 'rapidjson'
 
 local conn
 
@@ -40,7 +41,7 @@ function ConnectToEditor.Connect()
 				end
 			end
 			local err = io.WriteAllText(m.path, m.content)
-			if not err then
+			if err then
 				_LogE(err)
 			end
 		end)

@@ -31,7 +31,11 @@ namespace x600d1dea.lua.networking
 		{
 			try
 			{
-				var m = JsonConvert.DeserializeObject<stubs.networking.ECMHeader>(msg);
+				var m = JsonConvert.DeserializeObject<stubs.networking.ECMHeader>(
+					msg, 
+					new JsonSerializerSettings() {
+						MissingMemberHandling = MissingMemberHandling.Ignore
+					});
 				LuaFunction fn;
 				if (handlers.TryGetValue(m.id, out fn))
 				{
@@ -44,12 +48,11 @@ namespace x600d1dea.lua.networking
 						}));
 				}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				Config.LogError(string.Format("handle message failed: {0}", msg));
+				Config.LogError(string.Format("handle message failed: {0} {1}", msg, e.Message));
 			}
 		}
-
 
 		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
 		static int Register_Lua(IntPtr L)
@@ -61,7 +64,7 @@ namespace x600d1dea.lua.networking
 				Api.lua_pushstring(L, "duplicated ID");
 				return 2;
 			}
-			var fn = (LuaFunction)Lua.ObjectAtInternal(L, 2);
+			var fn = (LuaFunction)Lua.ValueAtInternal(L, 2);
 			handlers.Add(ID, fn);
 			Api.lua_pushboolean(L, true);
 			return 1;
