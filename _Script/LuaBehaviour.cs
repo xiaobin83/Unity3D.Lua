@@ -873,6 +873,12 @@ namespace x600d1dea.lua
 		}
 
 
+		public bool Destroyed()
+		{
+			return gameObject == null;
+		}
+
+
 		// https://docs.unity3d.com/Manual/ExecutionOrder.html
 		void UnloadLuaScript()
 		{
