@@ -638,11 +638,11 @@ namespace x600d1dea.lua
 			PreloadModule("pb", CModules.luaopen_pb);
 			PreloadModule("rapidjson", CModules.luaopen_rapidjson);
 			PreloadModule("bson", CModules.luaopen_bson);
-			PreloadModule("webrequest2", utils.WebRequest2_Lua.Open);
-			PreloadModule("sqlite", utils.SQLite_Lua.Open);
-			PreloadModule("nativeutils", utils.NativeUtils_Lua.Open);
-			PreloadModule("resmgr", utils.ResMgr_Lua.Open);
-			PreloadModule("connect_to_editor", networking.ConnectToEditor_Lua.Open);
+			PreloadModule("unity.sqlite", utils.SQLite_Lua.Open);
+			PreloadModule("unity.webrequest2", utils.WebRequest2_Lua.Open);
+			PreloadModule("unity.nativeutils", utils.NativeUtils_Lua.Open);
+			PreloadModule("unity.resmgr", utils.ResMgr_Lua.Open);
+			PreloadModule("unity.connect_to_editor", networking.ConnectToEditor_Lua.Open);
 			PreloadModule("unity.io", utils.IO_Lua.Open);
 		}
 

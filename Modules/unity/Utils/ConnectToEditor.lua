@@ -21,7 +21,7 @@ local _Exec = function(cmd)
 end
 
 function ConnectToEditor.Connect()
-	conn = require 'connect_to_editor'
+	conn = require 'unity.connect_to_editor'
 	conn.Register('exec_lua', 
 		function(msg) 
 			local m = json.decode(msg)
