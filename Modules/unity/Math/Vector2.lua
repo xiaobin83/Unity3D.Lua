@@ -59,7 +59,7 @@ function funcs:GetLength() --Return the length of the vector (i.e. the distance 
 end
 
 function funcs:GetSquaredLength()
-	return self.x^2 + self.y^2 + self.z^2
+	return self.x^2 + self.y^2
 end
 
 function funcs:Normalized()
