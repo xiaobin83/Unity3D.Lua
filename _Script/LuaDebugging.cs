@@ -33,13 +33,13 @@ namespace x600d1dea.lua
 	public class LuaDebugging
 	{
 		static LuaFunction debuggeePoll;
-		[MenuItem("Lua/Start Debugging (debug debuggee) ...")]
+		[MenuItem("x600d1dea/Lua/Start Debugging (debug debuggee) ...")]
 		static void StartDebugging_DumpCommunication()
 		{
 			StartDebuggingWithOption(debugDebuggee:true);
 		}
 
-		[MenuItem("Lua/Start Debugging ...")]
+		[MenuItem("x600d1dea/Lua/Start Debugging ...")]
 		public static void StartDebugging()
 		{
 			StartDebuggingWithOption(debugDebuggee:false);
