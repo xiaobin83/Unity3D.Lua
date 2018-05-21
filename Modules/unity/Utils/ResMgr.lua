@@ -1,5 +1,5 @@
 local Unity = require 'unity.Unity'
-local resmgr = require 'resmgr'
+local resmgr = require 'unity.resmgr'
 
 local cache = {}
 

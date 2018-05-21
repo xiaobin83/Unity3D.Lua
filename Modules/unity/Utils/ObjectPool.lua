@@ -42,13 +42,15 @@ function ObjectPool.Obtain(type, uri, ...)
 	local obj
 	if lastObjIdx > 0 then
 		obj = objList[lastObjIdx]
-		local posU, rotU = ...
+		local posU, rotU, trans = ...
 		if posU then
-			if not rotU then
-				rotU = Math.Quaternion.identityU
-			end
 			obj.transform.position = posU
+		end
+		if rotU then
 			obj.transform.rotation = rotU
+		end
+		if trans then
+			obj.transform:SetParent(trans, true)
 		end
 		objList[lastObjIdx] = nil
 	else
