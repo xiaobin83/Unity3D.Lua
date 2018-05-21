@@ -20,7 +20,7 @@ namespace x600d1dea.lua.utils
 			{
 				new Api.luaL_Reg("LoadTexture", LoadTexture_Lua),
 				new Api.luaL_Reg("Untar", Untar_Lua),
-				new Api.luaL_Reg("UntarFromResource", UntarFromResources_Lua),
+				new Api.luaL_Reg("UntarFromResources", UntarFromResources_Lua),
 			};
 			Api.luaL_newlib(L, reg);
 			return 1;
