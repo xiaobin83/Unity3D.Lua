@@ -1,6 +1,6 @@
 local SQLite = {}
 
-local sqlite = require 'sqlite'
+local sqlite = require 'unity.sqlite'
 
 function SQLite.ConnectToResourceDB(filename)
 	return sqlite.ConnectToResourceDB(filename)
