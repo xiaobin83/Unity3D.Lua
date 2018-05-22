@@ -204,10 +204,20 @@ end
 
 --------------------------
 
+function Math.Sum(arr)
+	local value = 0
+	for _, e in ipairs(arr) do
+		value = value + e 
+	end
+	return value 
+end
+
 Math.Lerp = _Lerp
 Math.Clamp = _Clamp
 Math.Approximate = _Approximate
 Math.Round = _Round
 Math.Smooth01_M5 = _Smooth01_M5
+
+
 
 return Math

@@ -5,6 +5,14 @@ local timestamp = csharp.timestamp;
 local Unity = require 'unity.Unity'
 local UnityTime = Unity.Time
 
+Time.kMinute = 60
+Time.kHour = Time.kMinute * 60
+Time.kDay = Time.kHour * 24
+Time.kWeek = Time.kDay * 7
+
+
+local _floor = math.floor
+
 -- realtime since startup, for measuare execution time
 function Time.RS()
 	return UnityTime.realtimeSinceStartup
@@ -20,6 +28,27 @@ end
 
 function Time.RawTS()
 	return timestamp()
+end
+
+function Time.GetDays(second)
+	return second / Time.kDay
+end
+
+function Time.GetHours(second)
+	return second / Time.kHour 
+end	
+
+function Time.GetMinues(second)
+	return second / Time.kMinute
+end	
+
+-- x day y hrs z min w second
+function Time.GetDifference(second)
+	local d = _floor(Time.GetDays(second))
+	local h = _floor(Time.GetHours(second % Time.kDay))
+	local m = _floor(Time.GetMinues(second % Time.kHour))
+	local s = _floor(second % Time.kMinute)
+	return d, h, m, s
 end
 
 

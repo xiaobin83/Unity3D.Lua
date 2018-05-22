@@ -46,7 +46,7 @@ namespace x600d1dea.lua.utils
 				complete = (LuaFunction)lua.Lua.ValueAtInternal(L, 4);
 			}
 			var context = (WebRequest2.Context)lua.Lua.ObjectAtInternal(L, 5);
-			WebRequest2.Get(new System.Uri(url), function, queryString, 
+			WebRequest2.GET(new System.Uri(url), function, queryString, 
 				(s, resCode, payload, cookies, headers, localContext) => 
 				{
 					if (complete != null)
