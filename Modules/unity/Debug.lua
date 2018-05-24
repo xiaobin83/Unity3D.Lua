@@ -2,6 +2,7 @@ local Debug = {}
 
 local serpent = require 'serpent'
 local Unity = require 'unity.Unity'
+local Misc = require 'unity.misc'
 
 Debug.LL_ERROR = 1
 Debug.LL_WARNING = 2
@@ -15,35 +16,38 @@ function Debug.DisableLogStackTrace()
 	Unity.Application.SetStackTraceLogType(3, 0)
 end
 
-local timeString_ = csharp.timeString
-local timeString = function()
-	return '[' .. timeString_() .. ']'
+Debug.DisableLogStackTrace()
+
+local _format = string.format
+local _timeString = Misc.UTCNowString
+local timeString = function(msg)
+	return _format('[%s]%s', _timeString(), msg)
 end
 
 -- global functions
 function _LogE(msg)
 	if Debug.logLevel >= Debug.LL_ERROR then
-		Unity.Debug.LogError(timeString() .. msg)
+		Unity.Debug.LogError(timeString(msg))
 	end
 end
 function _LogW(msg)
 	if Debug.logLevel >= Debug.LL_WARNING then
-		Unity.Debug.LogWarning(timeString() .. msg)
+		Unity.Debug.LogWarning(timeString(msg))
 	end
 end
 function _LogI(msg)
 	if Debug.logLevel >= Debug.LL_INFO then
-		Unity.Debug.Log(timeString() .. msg)
+		Unity.Debug.Log(timeString(msg))
 	end
 end
 function _LogD(msg)
 	if Debug.logLevel >= Debug.LL_DEBUG then
-		Unity.Debug.Log(timeString() .. msg)
+		Unity.Debug.Log(timeString(msg))
 	end
 end
 function _LogT(msg)
 	if Debug.logLevel >= Debug.LL_TRIVIAL then
-		Unity.Debug.Log(timeString() .. msg)
+		Unity.Debug.Log(timeString(msg))
 	end
 end
 

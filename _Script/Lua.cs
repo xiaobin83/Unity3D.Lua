@@ -583,30 +583,8 @@ namespace x600d1dea.lua
 				var asBytes = LuaFunction.MakeRefTo(this, -2);
 				csharp["as_bytes"] = asBytes;
 				asBytes.Dispose();
-
-
-				var origin = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-				var timeStamp = LuaFunction.CreateDelegate(this, new System.Func<double>(
-					() =>
-					{
-						return DateTime.UtcNow.Subtract(origin).TotalSeconds;
-					})); 
-				csharp["timestamp"] = timeStamp;
-				timeStamp.Dispose();
-				timeStamp = null;
-
-				var timeString = LuaFunction.CreateDelegate(this, new System.Func<string>(
-					() =>
-					{
-						return DateTime.UtcNow.ToString("MM/dd HH:mm:ss.fff");
-					}));
-				csharp["timeString"] = timeString;
-				timeString.Dispose();
-				timeString = null;
-
 				Api.lua_pop(L, 2); // pop those
 
-				LuaAdditionalFunctions.Open(this);
 			}
 			catch (Exception e)
 			{
@@ -638,12 +616,14 @@ namespace x600d1dea.lua
 			PreloadModule("pb", CModules.luaopen_pb);
 			PreloadModule("rapidjson", CModules.luaopen_rapidjson);
 			PreloadModule("bson", CModules.luaopen_bson);
+
 			PreloadModule("unity.sqlite", utils.SQLite_Lua.Open);
 			PreloadModule("unity.webrequest2", utils.WebRequest2_Lua.Open);
 			PreloadModule("unity.nativeutils", utils.NativeUtils_Lua.Open);
 			PreloadModule("unity.resmgr", utils.ResMgr_Lua.Open);
 			PreloadModule("unity.connect_to_editor", networking.ConnectToEditor_Lua.Open);
 			PreloadModule("unity.io", utils.IO_Lua.Open);
+			PreloadModule("unity.misc", utils.Misc_Lua.Open);
 		}
 
 		public void Dispose()

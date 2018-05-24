@@ -21,7 +21,11 @@ function SQLite.Query(conn, queryString, readerCallback)
 		shouldBreak = shouldBreak or false
 		return shouldBreak 
 	end
-	sqlite.ExecuteReader(conn, queryString, func)
+	return sqlite.ExecuteReader(conn, queryString, func)
+end
+
+function SQLite.Execute(conn, cmdString)
+	return sqlite.Execute(conn, cmdString)
 end
 
 function SQLite.Close(conn)

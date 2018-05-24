@@ -37,6 +37,7 @@ function RuntimeData.CreateOrObtainSaved(name)
 		end
 		d.onValueChanged = d.onValueChanged + function()
 			Unity.PlayerPrefs.SetString(savename, json.encode(d.__value))
+			Unity.PlayerPrefs.Save()
 		end
 		all[name] = d
 	end
