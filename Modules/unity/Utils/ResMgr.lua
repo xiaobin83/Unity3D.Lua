@@ -32,11 +32,29 @@ _R = function(t, uri, ...)
 	uri = _lower(uri)	
 	local r = c[uri]
 	if r then
+		if t == 'sprite' then
+			local spriteName = ...
+			if spriteName then
+				return r[spriteName]
+			end
+		end
 		return r
 	end
 	
+	local alter
 	if t == 'sprite' then
-		r = resmgr.LoadSprite(uri)
+		local spriteName = ...
+		if spriteName then
+			r = resmgr.LoadSprites(uri)
+			local newR = {}
+			for _, sprite in ipairs(r) do
+				newR[sprite.name] = sprite
+			end
+			r = newR
+			alter = r[spriteName]
+		else
+			r = resmgr.LoadSprite(uri)
+		end
 	elseif t == 'sprites' then
 		r = resmgr.LoadSprites(uri)
 	elseif t == 'bytes' then
@@ -57,7 +75,7 @@ _R = function(t, uri, ...)
 
 	c[uri] = r
 
-	return r
+	return alter or r
 end
 
 return _R

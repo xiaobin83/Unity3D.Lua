@@ -22,6 +22,16 @@ function ObjectPool.NativePoolDelegate(action, ...)
 	end
 end
 
+local poolTransform 
+local _GetPoolTransform = function()
+	if not poolTransform then
+		local go = Unity.GameObject('_PoolObject')
+		Unity.GameObject.DontDestroyOnLoad(go)
+		poolTransform = go.transform
+	end
+	return poolTransform
+end
+
 function ObjectPool.Obtain(type, uri, ...)
 	local list = freeList[type]
 	if not list then
@@ -61,69 +71,51 @@ function ObjectPool.Obtain(type, uri, ...)
 			if not obj then return nil end
 		end
 	end
-	obj:SetActive(true)
 	allocList[obj:GetInstanceID()] = {obj, type, uri}
 	return obj
 end
 
 
-local _Release = function(obj, resetParent)
+local _Release = function(obj)
 	if obj == nil then return end
 
-	if resetParent then
-		if type(resetParent) == 'boolean' then
-			obj.transform:SetParent(nil, false)
-		else
-			obj.transform:SetParent(resetParent, false)
-		end
-	end
 	local id = obj:GetInstanceID()
 	local objTuple = allocList[id]
 	if objTuple then
+
+		obj:SetActive(false)
+		obj.transform:SetParent(_GetPoolTransform(), false)
+
 		local obj_, type, uri = unpack(objTuple)
 		assert(obj_ == obj)
 		obj:SetActive(false)
 		allocList[id] = nil
 		local objList = freeList[type][uri] 
 		objList[#objList + 1] = obj
+	else
+		_LogW('not allocated by pool. only destroy it')
+		Unity.GameObject.Destroy(obj)
 	end
 end
 
-function ObjectPool.Release(obj, delay, resetParent)
+function ObjectPool.Release(obj, delay)
 	if obj == nil then return end
 	delay = delay or 0
 	if delay > 0 then
-		if resetParent then
-			obj.transform:SetParent(nil)	
-		end
-		Timer.After(delay, _Release, obj)
+		Timer.StaticAfter(delay, _Release, obj)
 	else
-		_Release(obj, resetParent)
+		_Release(obj)
 	end
 end
 
 function ObjectPool.CleanUnused()
-	for _, list in pairs(freeList) do
-		for uri, objList in pairs(list) do
-			for _, obj in ipairs(objList) do
-				if obj ~= nil then
-					Unity.GameObject.Destroy(obj)
-				end
-			end
-			list[uri] = {} 
-		end
-	end
+	Unity.GameObject.Destroy(poolTransform.gameObject)
+	poolTransform = nil 
+	freeList = {}
 end
 
 function ObjectPool.Clean()
 	ObjectPool.CleanUnused()
-	freeList = {}
-	for _, objTuple in pairs(allocList) do
-		local obj, type = unpack(objTuple)
-		if obj ~= nil then
-			Unity.Object.Destroy(obj)
-		end
-	end
 	allocList = {}
 end
 

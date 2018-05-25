@@ -23,8 +23,13 @@ Unity.lua = setmetatable({
 		if lb then
 			return lb:GetBehaviourTable()
 		end
-	end},
-
+	end,
+	AddScript = function(gameObject, scriptName)
+		local lb = gameObject:AddComponent(Unity.lua.LuaBehaviour)
+		lb:LoadScript(scriptName)
+		return lb:GetBehaviourTable()
+	end
+	},
 	{ __index = function(tbl, name)
 		local m = csharp.checked_import('x600d1dea.lua.'..name)
 		rawset(tbl, name, m)

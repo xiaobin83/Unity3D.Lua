@@ -101,7 +101,7 @@ namespace x600d1dea.lua.utils
 			for (int i = 0; i < sprites.Length; ++i)
 			{
 				lua.Lua.PushObjectInternal(L, sprites[i]);
-				Api.lua_seti(L, -2, i);
+				Api.lua_seti(L, -2, i+1);
 			}
 			return 1;
 		}

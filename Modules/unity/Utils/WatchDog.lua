@@ -11,6 +11,9 @@ function WatchDog.WatchTable(tbl)
 		proxy.__value = tbl or {}
 		proxy.onValueChanged = Delegate()
 	end
+	proxy.Value = function()
+		return proxy.__value
+	end
 
 	return setmetatable(proxy, {
 		__index = function(t, name)
