@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using AOT;
 using System;
 using x600d1dea.stubs.utils;
+using System.IO;
+using UnityEngine;
 
 namespace x600d1dea.lua.utils
 {
@@ -25,11 +26,68 @@ namespace x600d1dea.lua.utils
 		public static int Download_Lua(IntPtr L)
 		{
 			string url = Api.lua_tostring(L, 1);
-			var complete = (LuaFunction)lua.Lua.ValueAtInternal(L, 2);
+			string storePath = string.Empty;
+			int index = 2;
+			if (Api.lua_isstring(L, index))
+			{
+				storePath = Api.lua_tostring(L, index);
+				storePath = Path.Combine(Application.persistentDataPath, storePath);
+				++index;
+
+				var dir = Path.GetDirectoryName(storePath);
+				if (!Directory.Exists(dir))
+				{
+					try
+					{
+						Directory.CreateDirectory(dir);
+					}
+					catch (Exception e)
+					{
+						Api.lua_pushstring(L, e.ToString());
+						return 1;
+					}
+				}
+			}
+
+			LuaFunction complete = null;
+			if (Api.lua_isfunction(L, index))
+			{
+				complete = (LuaFunction)lua.Lua.ValueAtInternal(L, index);
+			}
+
 			WebRequest2.Download(url, (data) =>
 			{
-				complete.Invoke(data);
-				complete.Dispose();
+				if (string.IsNullOrEmpty(storePath))
+				{
+					if (complete != null)
+					{
+						complete.Invoke(data);
+						complete.Dispose();
+					}
+				}
+				else
+				{
+					if (data != null)
+					{
+						try
+						{
+							File.WriteAllBytes(storePath, data);
+							if (complete != null)
+							{
+								complete.Invoke(storePath);
+								complete.Dispose();
+							}
+						}
+						catch (Exception e)
+						{
+							if (complete != null)
+							{
+								complete.Invoke(null, e.ToString());
+								complete.Dispose();
+							}
+						}
+					}
+				}
 			});
 			return 0;
 		}

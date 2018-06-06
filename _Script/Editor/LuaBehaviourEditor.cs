@@ -382,6 +382,8 @@ namespace x600d1dea.lua
 			{
 				Undo.RecordObject(target, "LuaBehaviour.RemoveObject");
 				serializedKeys.DeleteArrayElementAtIndex(idToDelete);
+				if (serializedObjects.GetArrayElementAtIndex(idToDelete).objectReferenceValue != null)
+					serializedObjects.DeleteArrayElementAtIndex(idToDelete);
 				serializedObjects.DeleteArrayElementAtIndex(idToDelete);
 			}
 

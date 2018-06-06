@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
 using System;
 using AOT;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Core;
+using System.Collections.Generic;
 
 namespace x600d1dea.lua.utils
 {
@@ -20,8 +21,11 @@ namespace x600d1dea.lua.utils
 				new Api.luaL_Reg("GetDirectoryName", GetDirectoryName_Lua),
 				new Api.luaL_Reg("DirectoryExists", DirectoryExists_Lua),
 				new Api.luaL_Reg("FileExists", FileExists_Lua),
+				new Api.luaL_Reg("ReadAllBytes", ReadAllBytes_Lua),
+				new Api.luaL_Reg("ReadAllText", ReadAllText_Lua),
 				new Api.luaL_Reg("WriteAllBytes", WriteAllBytes_Lua),
 				new Api.luaL_Reg("WriteAllText", WriteAllText_Lua),
+				new Api.luaL_Reg("Unzip", Unzip_Lua),
 			};
 			Api.luaL_newlib(L, reg);
 			return 1;
@@ -70,7 +74,7 @@ namespace x600d1dea.lua.utils
 
 
 		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
-		public static int WriteAllText_Lua(IntPtr L)
+		static int WriteAllText_Lua(IntPtr L)
 		{
 			var filename = Api.lua_tostring(L, 1);
 			var text = Api.lua_tostring(L, 2);
@@ -87,7 +91,7 @@ namespace x600d1dea.lua.utils
 		}
 
 		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
-		public static int WriteAllBytes_Lua(IntPtr L)
+		static int WriteAllBytes_Lua(IntPtr L)
 		{
 			var filename = Api.lua_tostring(L, 1);
 			var bytes = Api.lua_tobytes(L, 2);
@@ -101,6 +105,105 @@ namespace x600d1dea.lua.utils
 				return 1;
 			}
 			return 0;
+		}
+
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
+		static int ReadAllBytes_Lua(IntPtr L)
+		{
+			var filename = Api.lua_tostring(L, 1);
+			try
+			{
+				var bytes = File.ReadAllBytes(filename);
+				Api.lua_pushbytes(L, bytes);
+				return 1;
+			}
+			catch (Exception e)
+			{
+				Api.lua_pushnil(L);
+				Api.lua_pushstring(L, e.Message);
+				return 2;
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
+		static int ReadAllText_Lua(IntPtr L)
+		{
+			var filename = Api.lua_tostring(L, 1);
+			try
+			{
+				var text = File.ReadAllText(filename);
+				Api.lua_pushstring(L, text);
+				return 1;
+			}
+			catch (Exception e)
+			{
+				Api.lua_pushnil(L);
+				Api.lua_pushstring(L, e.Message);
+				return 2;
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(Api.lua_CFunction))]
+		static int Unzip_Lua(IntPtr L)
+		{
+			var filename = Api.lua_tostring(L, 1);
+			var unzipFolder = filename + "_unzipped";
+			filename = Path.Combine(Application.persistentDataPath, filename);
+			if (File.Exists(filename))
+			{
+				var buffer = new byte[8192];
+				ZipFile zf = null;
+				var fileList = new Dictionary<string, string>();
+				try
+				{
+					zf = new ZipFile(File.OpenRead(filename));
+					foreach (ZipEntry entry in zf)
+					{
+						if (!entry.IsFile)
+						{
+							continue;
+						}
+						var zipStream = zf.GetInputStream(entry);
+						var relZipFilename = Path.Combine(unzipFolder, entry.Name);
+						var zipFilename = Path.Combine(Application.persistentDataPath, relZipFilename);
+						var dir = Path.GetDirectoryName(zipFilename);
+						if (!File.Exists(dir))
+						{
+							Directory.CreateDirectory(dir);
+						}
+						using (var f = File.Create(zipFilename))
+						{
+							StreamUtils.Copy(zipStream, f, buffer);
+						}
+						fileList.Add(entry.Name, relZipFilename);
+					}
+				}
+				catch (Exception e)
+				{
+					Api.lua_pushnil(L);
+					Api.lua_pushstring(L, e.Message);
+					return 2;
+				}
+				finally
+				{
+					if (zf != null)
+					{
+						zf.IsStreamOwner = true; 
+						zf.Close();
+					}
+				}
+
+				Api.lua_newtable(L);
+				foreach (var kv in fileList)
+				{
+					Api.lua_pushstring(L, kv.Value);
+					Api.lua_setfield(L, -2, kv.Key);
+				}
+				return 1;
+			}
+			Api.lua_pushnil(L);
+			Api.lua_pushstring(L, "file not found: " + filename);
+			return 2;
 		}
 
 	}

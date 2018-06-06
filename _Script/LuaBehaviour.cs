@@ -716,6 +716,14 @@ namespace x600d1dea.lua
 			StartCoroutine(LuaCoroutine(thread));
 		}
 
+		public int numRunningCoroutine
+		{
+			get
+			{
+				return runningCoroutines.Count;
+			}
+		}
+
 		bool ShouldReceiveMessage(Message message)
 		{
 			if (enabled) return true;
