@@ -205,6 +205,15 @@ namespace x600d1dea.lua
 			return lua_toboolean_(L, idx) != 0;
 		}
 
+		public static bool lua_chkboolean(IntPtr L, int idx, bool defaultValue=false)
+		{
+			if (lua_isboolean(L, idx))
+			{
+				return lua_toboolean(L, idx);
+			}
+			return defaultValue;
+		}
+
 		[DllImport(LIBNAME, EntryPoint = "lua_tolstring", CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr lua_tolstring(IntPtr L, int idx, out IntPtr len);
 
@@ -239,6 +248,13 @@ namespace x600d1dea.lua
 			if (strPtr != IntPtr.Zero)
 				return Marshal.PtrToStringAnsi(strPtr, (int)len);
 			return null;
+		}
+
+		public static string lua_chkstring(IntPtr L, int idx, string defaultValue = null)
+		{
+			if (lua_isstring(L, idx))
+				return lua_tostring(L, idx);
+			return defaultValue;
 		}
 
 		[DllImport(LIBNAME, CallingConvention = CallingConvention.Cdecl)]

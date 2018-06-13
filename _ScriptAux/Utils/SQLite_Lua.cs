@@ -84,6 +84,7 @@ namespace x600d1dea.lua.utils
 			{
 				var n = cmd.ExecuteNonQuery();
 				Api.lua_pushinteger(L, n);
+				Api.lua_pushnil(L);
 			}
 			catch (Exception e)
 			{
