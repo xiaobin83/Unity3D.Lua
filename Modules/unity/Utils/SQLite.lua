@@ -6,6 +6,10 @@ function SQLite.ConnectToResourceDB(filename)
 	return sqlite.ConnectToResourceDB(filename)
 end
 
+function SQLite.ConnectToFileDB(filename)
+	return sqlite.ConnectToFileDB(filename)
+end
+
 local xpcall = xpcall
 local _MsgHandler = function(err)
 	_LogE(msg .. '\n' .. debug.traceback())

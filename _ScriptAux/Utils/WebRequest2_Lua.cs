@@ -82,7 +82,7 @@ namespace x600d1dea.lua.utils
 						{
 							if (complete != null)
 							{
-								complete.Invoke(null, e.ToString());
+								complete.Invoke((object)null, e.ToString());
 								complete.Dispose();
 							}
 						}
