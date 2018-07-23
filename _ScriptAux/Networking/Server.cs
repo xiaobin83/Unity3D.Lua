@@ -7,7 +7,7 @@ using x600d1dea.lua.utils;
 
 namespace x600d1dea.lua.networking
 {
-	public class Server : Debugable
+	public class Server : Debuggable
 	{
 		class Session
 		{

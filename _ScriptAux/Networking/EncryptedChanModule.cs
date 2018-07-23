@@ -2,7 +2,6 @@
 using x600d1dea.stubs.networking;
 using x600d1dea.pike;
 using x600d1dea.stubs.utils;
-using x600d1dea.lua;
 
 namespace x600d1dea.lua.networking
 {

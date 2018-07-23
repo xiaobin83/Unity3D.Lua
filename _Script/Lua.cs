@@ -790,7 +790,12 @@ namespace x600d1dea.lua
 #if UNITY_ANDROID
 			tbl["ANDROID"] = true;
 #endif
-			tbl.Push();
+            foreach (var macro in common.SdkEnabler.instance.allEnabledSdkMacros)
+            {
+                tbl[macro] = true;
+            }
+
+            tbl.Push();
 			Api.lua_setglobal(L, "_UNITY");
 			tbl.Dispose();
 
@@ -952,7 +957,7 @@ namespace x600d1dea.lua
 
 		static string[] DefaultEditorGetPath()
 		{
-#if UNITY_EDITOR 
+#if UNITY_EDITOR
 			if (!Application.isPlaying)
 			{
 				var getPath = LuaEditorGetPathDelegateAttribute.GetDelegate();

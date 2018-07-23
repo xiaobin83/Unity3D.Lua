@@ -2,22 +2,22 @@
 
 namespace x600d1dea.lua.utils
 {
-	public class FullScreenDebugable : Debugable
+	public class FullScreenDebuggable : Debuggable
 	{
-		static Debugable instance_;
-		public static Debugable instance
+		static Debuggable instance_;
+		public static Debuggable instance
 		{
 			get
 			{
 				if (instance_ == null)
 				{
-					instance_ = GameObject.FindObjectOfType<FullScreenDebugable>();
+					instance_ = GameObject.FindObjectOfType<FullScreenDebuggable>();
 				}
 				if (instance_ == null)
 				{
-					var go = new GameObject("_FullScreenDebugable");
+					var go = new GameObject("_FullScreenDebuggable");
 					DontDestroyOnLoad(go);
-					instance_ = go.AddComponent<FullScreenDebugable>();
+					instance_ = go.AddComponent<FullScreenDebuggable>();
 				}
 				return instance_;
 			}

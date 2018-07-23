@@ -4,7 +4,7 @@ using x600d1dea.stubs.utils;
 
 namespace x600d1dea.lua.utils
 {
-	public class Debugable : MonoBehaviour
+	public class Debuggable : MonoBehaviour
 	{
 		protected Rect rect = new Rect(Screen.width - 400, Screen.height - 400, 400, 400);
 

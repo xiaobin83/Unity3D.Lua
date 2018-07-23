@@ -11,6 +11,26 @@ Unity.UI = setmetatable({}, { __index = function(tbl, name)
 	return m
 end})
 
+Unity.EventSystems = setmetatable({}, { __index = function(tbl, name)
+	local m = csharp.checked_import('UnityEngine.EventSystems.'..name)
+	rawset(tbl, name, m)
+	return m
+end})
+
+
+Unity.AI = setmetatable({}, { __index = function(tbl, name)
+	local m = csharp.checked_import('UnityEngine.AI.'..name)
+	rawset(tbl, name, m)
+	return m
+end})
+
+
+Unity.Profiling = setmetatable({}, { __index = function(tbl, name)
+	local m = csharp.checked_import('UnityEngine.Profiling.'..name)
+	rawset(tbl, name, m)
+	return m
+end})
+
 Unity.game = setmetatable({}, { __index = function(tbl, name)
 	local m = csharp.checked_import(name)
 	rawset(tbl, name, m)
