@@ -25,9 +25,9 @@ namespace x600d1dea.lua.utils
 
 		void Awake()
 		{
-			Editor_SetArea(0, 0, Screen.width, Screen.height);
+			DBG_SetArea(0, 0, Screen.width, Screen.height);
 			show = true;
-			Editor_AddToolbarButton_Native("PopUp", Editor_TogglePopUp);
+			DBG_AddToolbarButton_Native("PopUp", DBG_TogglePopUp);
 		}
 
 	}

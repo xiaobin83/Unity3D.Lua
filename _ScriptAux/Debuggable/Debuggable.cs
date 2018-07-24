@@ -160,6 +160,8 @@ namespace x600d1dea.lua.utils
 		{
 			if (show)
 			{
+
+				System.Action toExecute = null;
 				if (!string.IsNullOrEmpty(title))
 				{
 					GUILayout.BeginArea(rect, title);
@@ -178,10 +180,15 @@ namespace x600d1dea.lua.utils
 					{
 						if (GUILayout.Button(b.name, GUILayout.Width(b.width)))
 						{
-							b.action();
+							toExecute = b.action; 
 						}
 					}
 					GUILayout.EndHorizontal();
+					if (toExecute != null)
+					{
+						toExecute();
+						toExecute = null;
+					}
 				}
 
 				if (showPopUp)
@@ -222,16 +229,20 @@ namespace x600d1dea.lua.utils
 					GUI.color = oldColor;
 					GUILayout.TextArea(statsString);
 				}
-
 				foreach (var b in buttons)
 				{
 					if (GUILayout.Button(b.name, GUILayout.Width(b.width)))
 					{
-						b.action();
+						toExecute = b.action;
 					}
 				}
 				GUILayout.EndScrollView();
 				GUILayout.EndArea();
+				if (toExecute != null)
+				{
+					toExecute();
+					toExecute = null;
+				}
 
 				if (Event.current.type == EventType.Repaint)
 				{
@@ -243,17 +254,17 @@ namespace x600d1dea.lua.utils
 			}
 		}
 
-		public void Editor_SetArea(float x, float y, float width, float height)
+		public void DBG_SetArea(float x, float y, float width, float height)
 		{
 			rect = new Rect(x, y, width, height);
 		}
 
-		public void Editor_SetTitle(string title)
+		public void DBG_SetTitle(string title)
 		{
 			this.title = title;
 		}
 
-		public void AddButton(string name, LuaFunction func, int width = 100)
+		public void DBG_AddButton(string name, LuaFunction func, int width = 100)
 		{
 			var b = new Button()
 			{
@@ -264,7 +275,7 @@ namespace x600d1dea.lua.utils
 			buttons.Add(b);
 		}
 
-		public void Editor_AddToolbarButton_Native(string name, System.Action action, int width = 100)
+		public void DBG_AddToolbarButton_Native(string name, System.Action action, int width = 100)
 		{
 			toolbarButtons.Add(
 				new Button()
@@ -275,7 +286,7 @@ namespace x600d1dea.lua.utils
 				});
 		}
 
-		public void Editor_AddToolbarButton(string name, LuaFunction func, int width = 100)
+		public void DBG_AddToolbarButton(string name, LuaFunction func, int width = 100)
 		{
 			var b = new Button();
 			b.name = name;
@@ -287,7 +298,18 @@ namespace x600d1dea.lua.utils
 			toolbarButtons.Add(b);
 		}
 
-		public void Editor_AddStatsString(string name, LuaFunction func)
+		public void DBG_RemoveToolbarButton(string name)
+		{
+			var index = toolbarButtons.FindIndex((b) => b.name == name);
+			if (index >= 0)
+			{
+				var b = toolbarButtons[index];
+				b.func.Dispose();
+				toolbarButtons.RemoveAt(index);
+			}
+		}
+
+		public void DBG_AddStatsString(string name, LuaFunction func)
 		{
 			statusStrings.Add(
 				new StatusString()
@@ -298,7 +320,7 @@ namespace x600d1dea.lua.utils
 
 		}
 
-		public void Editor_AddGraph_Native(
+		public void DBG_AddGraph_Native(
 			string name, string unitName, System.Func<float> value,
 			float time, float duration, float x, float y, float w, float h, Color color)
 		{
@@ -316,7 +338,7 @@ namespace x600d1dea.lua.utils
 			graphs.Add(g);
 		}
 
-		public void Editor_AddGraph(
+		public void DBG_AddGraph(
 			string name,
 			string unitName,
 			LuaFunction func,
@@ -339,23 +361,23 @@ namespace x600d1dea.lua.utils
 			graphs.Add(g);
 		}
 
-		public void SetCmdHandler(LuaFunction func)
+		public void DBG_SetCmdHandler(LuaFunction func)
 		{
 			cmdHandler = func.Retain();
 		}
 
-		public void Editor_ToggleGUI()
+		public void DBG_ToggleGUI()
 		{
 			show = !show;
 		}
 
-		public void PopUp(string content)
+		public void DBG_PopUp(string content)
 		{
 			popUpContent += content;
 			showPopUp = true;
 		}
 
-		public void Editor_TogglePopUp()
+		public void DBG_TogglePopUp()
 		{
 			showPopUp = !showPopUp;
 		}

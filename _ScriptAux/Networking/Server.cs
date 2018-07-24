@@ -96,22 +96,22 @@ namespace x600d1dea.lua.networking
 			var y = 60;
 			var width = 200;
 			var height = 80;
-			Editor_AddGraph_Native(
+			DBG_AddGraph_Native(
 				"server_send", "kbps", GetSendBandwidth, 10, 0.5f,
 				x, y, width, height, Color.red);
 
 			y += height + 5;
-			Editor_AddGraph_Native(
+			DBG_AddGraph_Native(
 				"server_recv", "kbps", GetRecvBandwidth, 10, 0.5f,
 				x, y, width, height, Color.blue);
 
 			y += height + 5;
-			Editor_AddGraph_Native(
+			DBG_AddGraph_Native(
 				"proxy_send", "kbps", GetProxySendBandwidth, 10, 0.5f,
 				x, y, width, height, Color.red);
 
 			y += height + 5;
-			Editor_AddGraph_Native(
+			DBG_AddGraph_Native(
 				"proxy_recv", "kbps", GetProxyRecvBandwidth, 10, 0.5f,
 				x, y, width, height, Color.blue);
 #endif

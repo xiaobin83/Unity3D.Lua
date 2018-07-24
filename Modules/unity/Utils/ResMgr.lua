@@ -71,6 +71,22 @@ _R = function(t, uri, ...)
 		r = resmgr.LoadObjects(uri)
 	elseif t == 'texture2d' then
 		r = resmgr.LoadTexture2D(uri)
+	elseif t == 'custom_text' then
+		local path = ...
+		r = resmgr.LoadCustomText(uri, path)
+	elseif t == 'custom_bytes' then
+		local path = ...
+		r = resmgr.LoadCustomBytes(uri, path)
+	elseif t == 'custom_object' then
+		local path = ...
+		r = resmgr.LoadCustomObject(uri, path)
+	elseif t == 'custom_objects' then
+		local path = ...
+		r = resmgr.LoadCustomObjects(uri, path)
+	elseif t == 'custom' then
+		local path = ...
+		resmgr.LoadCustom(uri, path)
+		r = nil
 	end
 
 	c[uri] = r

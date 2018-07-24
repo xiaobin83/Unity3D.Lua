@@ -5,6 +5,7 @@
 local Timer = {}
 Timer.__index = Timer
 
+local Unity = require 'unity.Unity'
 local Time = require 'unity.Utils.Time'
 
 local kMaxIntervalShift = 4  --> 1 << kMaxIntervalShift seconds

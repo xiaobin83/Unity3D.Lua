@@ -109,8 +109,10 @@ function ObjectPool.Release(obj, delay)
 end
 
 function ObjectPool.CleanUnused()
-	Unity.GameObject.Destroy(poolTransform.gameObject)
-	poolTransform = nil 
+	if poolTransform then
+		Unity.GameObject.Destroy(poolTransform.gameObject)
+		poolTransform = nil 
+	end
 	freeList = {}
 end
 

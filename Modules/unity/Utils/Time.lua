@@ -1,9 +1,8 @@
 local Time = {}
 local _LogT, _LogD, _LogI, _LogW, _LogE = require('unity.Debug').GetLogFuncs('[TIME]')
-
-local timestamp = csharp.timestamp;
 local Unity = require 'unity.Unity'
 local UnityTime = Unity.Time
+local Misc = require 'unity.misc'
 
 Time.kMinute = 60
 Time.kHour = Time.kMinute * 60
@@ -27,7 +26,7 @@ function Time.DT()
 end
 
 function Time.RawTS()
-	return timestamp()
+	return Misc.EpochNow() 
 end
 
 function Time.GetDays(second)
@@ -59,7 +58,7 @@ _M.__index = _M
 
 -- timestamp, used for sync between server and client
 function _M:TS()
-	return timestamp() + (self.delta or 0) + self.extraDelta
+	return Misc.EpochNow() + (self.delta or 0) + self.extraDelta
 end
 
 
